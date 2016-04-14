@@ -1,69 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Vue-single</title>
-  <script src="vue.js"></script>
-  <script src="todo.js"></script>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="src/css/main.css">
 </head>
 <body>
-  <div id="app">
-    <span v-el:username>someUser</span>
-    <br>
-    <span>{{message}}</span>
-    <br>
-    <input type="text"  style="width:400px" v-model="message">
-    <p>
-      <button @click="changeMessage" type="button">changeMessage</button>
-      <button @click="changeName" type="button">changeName</button>
-    </p>
-
-    <div>
-      <h2>To Do</h2>
-      <input type="text" v-model="filterField" >
-
-
-      <todo-list :list-data="listData" :filter-value="filterField" @onEdit="editTodo" @onDelete="deleteTodo" ></todo-list>
-    </div>
-  </div>
+    <div id="todo-app" v-cloak></div>
+    <script src="./dist/main.js" charset="utf-8"></script>
 </body>
-
-
-<script>
-    // var todoList = Vue.component('todoList' , todoComponet);
-    var vm = new Vue({
-      el: '#app',
-      data: {
-        message: 'hello world',
-        filterField: '',
-        listData: [
-        {text: 'react 1', id: '1' },
-        {text: 'todo 2' , id: '2'},
-        {text: 'mand 3' , id: '3'},
-        {text: 'xname 4' , id: '4'},
-        {text: 'vue 5' , id: '5'},
-      ]
-
-      },
-      methods: {
-        changeMessage(){
-          this.message = 'hello wrold' + Date.now();
-        },
-        changeName(){
-          this.$els.username.textContent = 'wang yong hua' + Date.now();
-        },
-        editTodo(){
-
-        },
-        deleteTodo(){
-
-        }
-      },
-      components: {
-        'todoList': todoComponet
-      }
-    });
-
-
-</script>
 </html>
