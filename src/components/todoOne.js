@@ -1,22 +1,56 @@
-let template = `<section @click.stop="enableEdit">
-    <div v-if="isEditMode">
-        <input type="text" :value="todoItem.text" />
+let template = `
+<section  style="-webkit-user-select: none;padding: 10px 20px;">
+    <div class="row" style="margin-bottom:0px">
+        <div class="col s2">
+            <input type="checkbox" id="chk{{todoItem.id}}" class="filled-in" v-model="todoItem.done" />
+            <label style="margin-top:10px " for="chk{{todoItem.id}}"></label>
+        </div>
+        <div class="col s10"  @dblclick.stop="enableEdit">
+            <input v-el:editinput v-if="isEditMode|| !todoItem.id" :autofocus="!todoItem.id" type="text" @click.stop v-model="todoItem.text" lazy />
+            <div :class={'done-todo':todoItem.done} style="height:3rem;line-height:3rem" v-else>{{todoItem.text}}</div >
+        </div>
     </div>
-    <div v-else>
-        <label>{{todoItem.text}}</lable>
-    </div>
-<section>`;
+</section>`;
+import _ from 'lodash';
+let initTodo = {
+    id: null,
+    text: '',
+    done: false
+};
 export default {
     template: template ,
-    props: ['todoItem'],
+    props: {
+        todoItem:{
+            default(){
+                return _.cloneDeep(initTodo);
+            }
+        }
+    },
     data(){
         return {
             isEditMode: false
         };
     },
+    watch:{
+        todoItem:{
+            //这地方逻辑处理的比较耦合，跟todolist 中的wath Listdata，不好理解
+            handler(newVal){
+                if (!_.isEmpty(newVal.text)) {
+                    this.$dispatch('set-todo', newVal);
+                    this.disableEdit();
+                }else {
+                    this.$els.editinput.focus();
+                }
+            },
+            deep:true
+        }
+    },
     methods:{
         enableEdit(){
             this.isEditMode = true;
+            this.$nextTick(()=>{
+                this.$els.editinput.focus();
+            });
         },
         disableEdit(){
             this.isEditMode = false;

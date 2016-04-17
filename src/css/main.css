@@ -1,3 +1,21 @@
 [v-cloak]{
     display: none;
 }
+
+#todo-app{
+    width: 500px;
+    margin: 100px auto 0 auto;
+
+}
+
+#toast-container div{
+    touch-action: pan-y;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    top: 0px;
+    opacity: 1;
+}
+.done-todo{
+    color: #bdbdbd;
+    text-decoration: line-through;
+}
