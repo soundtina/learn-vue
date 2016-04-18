@@ -11,7 +11,8 @@ module.exports = {
         loaders:[
             {
                 test:/\.js$/,
-                loader: 'babel'
+                loader: 'babel',
+                exclude:/node_modules/
             },
             {
                 test:/\.css$/,

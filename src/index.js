@@ -1,7 +1,6 @@
 let Vue = require('vue');
 import _ from 'lodash';
 import todoStore from './js/store';
-require('materialize-css/bin/materialize.css');
 import todoList from './components/todolist'
 let template =  `
 <section>

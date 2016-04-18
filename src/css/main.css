@@ -7,6 +7,22 @@
     margin: 100px auto 0 auto;
 
 }
+.todo-container{
+    position: relative;
+}
+
+
+.todo-container i{
+    position: absolute;
+    top: 20px;
+    right: 5px;
+    cursor: pointer;
+    display: none;;
+}
+
+.todo-container:hover i{
+    display: block;
+}
 
 #toast-container div{
     touch-action: pan-y;
@@ -18,4 +34,15 @@
 .done-todo{
     color: #bdbdbd;
     text-decoration: line-through;
+}
+
+/* 必需 */
+.expand-transition {
+  transition: all .8s ease;
+}
+
+/* .expand-enter 定义进入的开始状态 */
+/* .expand-leave 定义离开的结束状态 */
+.expand-enter, .expand-leave {
+  transform:translateX(500px);
 }

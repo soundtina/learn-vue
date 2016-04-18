@@ -1,15 +1,21 @@
 let template = `<section>
     <todo-filter @change-status="changeStatus"></todo-filter>
     <ul class="collection">
-        <li class="collection-item" style="padding:0" v-for="t in listData | filterBy filterStatus in 'done'" track-by="id">
-            <todo-one :todo-item="t"></todo-one>
+        <li class="collection-item" transition="expand" style="padding:0" v-for="t in listData | filterBy filterStatus in 'done'" track-by="id">
+            <div class="hoverable todo-container">
+                <todo-one :todo-item="t"></todo-one>
+                <i class="small material-icons" @click="removeTodo(t)" >close</i>
+            </div>
         </li>
         <li  class="collection-item" style="padding:0" >
             <todo-one :todo-item="defaultTodo" ></todo-one>
         </li>
 
     </ul>
-
+    <div class=" grey-text lighten-3">
+        double click to edit <br/>
+        powerd by materialize & vue
+    </div>
 </section>`;
 import todoOne from './todoOne';
 import todoFilter from './todoFilter';
@@ -40,8 +46,10 @@ export default {
 
     },
     methods:{
+        removeTodo(todoInfo){
+            this.listData.$remove(todoInfo);
+        },
         changeStatus(_status){
-            debugger
             this.filterStatus  = _status;
         }
 
