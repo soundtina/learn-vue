@@ -9,6 +9,20 @@ let template =  `
     </div>
     <todo-list @set-todo="setOneTodo"   :list-data="todoList"></todo-list>
 </section>`;
+Vue.mixin({
+    data() {
+        return{
+            __loadtime : 0
+        }
+    },
+    init: function () {
+        this.__loadtime = +Date.now();
+    },
+    ready(){
+        console.log(this.$options.name);
+        console.log(+Date.now() - this.__loadtime);
+    }
+});
 
 new Vue({
     el: '#todo-app',

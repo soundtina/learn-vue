@@ -19,6 +19,8 @@ let template = `<section>
 </section>`;
 import todoOne from './todoOne';
 import todoFilter from './todoFilter';
+import ajaxPlugin from '../js/async';
+console.log(ajaxPlugin);
 export default {
     template: template,
     props: {

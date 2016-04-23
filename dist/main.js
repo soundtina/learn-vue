@@ -60,9 +60,24 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Vue = __webpack_require__(7);
+	var Vue = __webpack_require__(8);
 
 	var template = '\n<section>\n    <div id="toast-container" v-show="msg">\n        <div class="toast" >{{msg}}</div>\n    </div>\n    <todo-list @set-todo="setOneTodo"   :list-data="todoList"></todo-list>\n</section>';
+	Vue.mixin({
+	    data: function data() {
+	        return {
+	            __loadtime: 0
+	        };
+	    },
+
+	    init: function init() {
+	        this.__loadtime = +Date.now();
+	    },
+	    ready: function ready() {
+	        console.log(this.$options.name);
+	        console.log(+Date.now() - this.__loadtime);
+	    }
+	});
 
 	new Vue({
 	    el: '#todo-app',
@@ -16240,9 +16255,15 @@
 
 	var _todoFilter2 = _interopRequireDefault(_todoFilter);
 
+	var _async = __webpack_require__(7);
+
+	var _async2 = _interopRequireDefault(_async);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var template = '<section>\n    <todo-filter @change-status="changeStatus"></todo-filter>\n    <ul class="collection">\n        <li class="collection-item" transition="expand" style="padding:0" v-for="t in listData | filterBy filterStatus in \'done\'" track-by="id">\n            <div class="hoverable todo-container">\n                <todo-one :todo-item="t"></todo-one>\n                <i class="small material-icons" @click="removeTodo(t)" >close</i>\n            </div>\n        </li>\n        <li  class="collection-item" style="padding:0" >\n            <todo-one :todo-item="defaultTodo" ></todo-one>\n        </li>\n\n    </ul>\n    <div class=" grey-text lighten-3">\n        double click to edit <br/>\n        powerd by materialize & vue\n    </div>\n</section>';
+
+	console.log(_async2.default);
 	exports.default = {
 	    template: template,
 	    props: {
@@ -16296,7 +16317,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var template = '\n<section  style="-webkit-user-select: none;padding: 10px 20px;">\n    <div class="row" style="margin-bottom:0px">\n        <div class="col s2">\n            <input type="checkbox" id="chk{{todoItem.id}}" class="filled-in" v-model="todoItem.done" />\n            <label style="margin-top:10px " for="chk{{todoItem.id}}"></label>\n        </div>\n        <div class="col s10"  @dblclick.stop="enableEdit">\n            <input v-el:editinput v-if="isEditMode|| !todoItem.id" :autofocus="!todoItem.id" type="text" @click.stop v-model="todoItem.text" lazy />\n            <div :class={\'done-todo\':todoItem.done} style="height:3rem;line-height:3rem" v-else>{{todoItem.text}}</div >\n        </div>\n    </div>\n</section>';
+	var template = '\n<section  style="-webkit-user-select: none;padding: 10px 20px;">\n    <div class="row" style="margin-bottom:0px">\n        <div class="col s2">\n            <input type="checkbox" id="chk{{todoItem.id}}" class="filled-in" v-model="todoItem.done" />\n            <label style="margin-top:10px " for="chk{{todoItem.id}}"></label>\n        </div>\n        <div class="col s10"  @dblclick.stop="enableEdit">\n            <input  v-el:editinput v-if="isEditMode|| !todoItem.id" :autofocus="!todoItem.id" type="text" @click.stop v-model="todoItem.text" lazy />\n            <div :class={\'done-todo\':todoItem.done} style="height:3rem;line-height:3rem" v-else>{{todoItem.text}}</div >\n        </div>\n    </div>\n</section>';
 
 	var initTodo = {
 	    id: null,
@@ -16360,23 +16381,45 @@
 	        window.removeEventListener('click', function () {
 	            _this3.disableEdit();
 	        });
+	    },
+
+	    directives: {
+	        placeholder: function placeholder(placeString) {
+	            var vm = this.vm;
+	            if (_lodash2.default.isEmpty(vm.todoItem.text)) {
+	                vm.todoItem.text = placeString;
+	            }
+	            // console.log(placeString);
+	        }
 	    }
 	};
 
 /***/ },
 /* 6 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	var template = '\n<section>\n    <template v-for="st in status">\n        <input name="group-status" type="radio" id="todo-{{st}}" @click="setStatus($index)" />\n        <label for="todo-{{st}}">{{st | capitalize}}</label>\n    </template>\n</section>\n';
+
+	var _lodash = __webpack_require__(1);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var template = '\n<section>\n    <div>\n        <input id="lang-cn" v-model="lang" type="radio" v-bind:value="\'CN\'">\n        <label for="lang-cn">CN</label>\n        <input id="lang-en" v-model="lang" type="radio" v-bind:value="\'EN\'">\n        <label for="lang-en" >EN</label>\n    </div>\n    <template v-for="st in status">\n        <input name="group-status" type="radio" id="todo-{{st}}" @click="setStatus($index)" />\n        <label for="todo-{{st}}" v-trans="st" :lang="lang" >{{st | capitalize}}</label>\n    </template>\n</section>\n';
+	var translate = {
+	    CN: [{ 'All': '所有' }]
+	};
 	exports.default = {
+	    name: '',
 	    template: template,
 	    data: function data() {
 	        return {
+	            lang: 'CN',
 	            status: ['all', 'done', 'remain']
 	        };
 	    },
@@ -16386,12 +16429,40 @@
 	            var statusMap = [null, true, false];
 	            this.$dispatch('change-status', statusMap[_status]);
 	        }
+	    },
+	    directives: {
+	        trans: {
+	            params: ['lang'],
+	            bind: function bind(value) {
+	                // let vm = this.vm;
+	                this.el.innerHTML = _lodash2.default.get(translate, this.params.lang + '[0]' + value, value);
+	                console.log(this.el.innerHTML);
+	            }
+	        }
 	    }
 
 	};
 
 /***/ },
 /* 7 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var ajaxPlugin = {
+	    install: function install(Vue, options) {
+	        Vue.prototype.$getJson = function (url) {
+	            console.log(url);
+	        };
+	    }
+	};
+	exports.ajaxPlugin = ajaxPlugin;
+
+/***/ },
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, process) {/*!
@@ -26317,10 +26388,10 @@
 	}, 0);
 
 	module.exports = Vue;
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(8)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(9)))
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser

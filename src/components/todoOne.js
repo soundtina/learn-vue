@@ -6,7 +6,7 @@ let template = `
             <label style="margin-top:10px " for="chk{{todoItem.id}}"></label>
         </div>
         <div class="col s10"  @dblclick.stop="enableEdit">
-            <input v-el:editinput v-if="isEditMode|| !todoItem.id" :autofocus="!todoItem.id" type="text" @click.stop v-model="todoItem.text" lazy />
+            <input  v-el:editinput v-if="isEditMode|| !todoItem.id" :autofocus="!todoItem.id" type="text" @click.stop v-model="todoItem.text" lazy />
             <div :class={'done-todo':todoItem.done} style="height:3rem;line-height:3rem" v-else>{{todoItem.text}}</div >
         </div>
     </div>
@@ -65,5 +65,14 @@ export default {
         window.removeEventListener('click', ()=>{
             this.disableEdit();
         });
+    },
+    directives:{
+        placeholder(placeString){
+            let vm = this.vm;
+            if (_.isEmpty(vm.todoItem.text)) {
+                vm.todoItem.text = placeString;
+            }
+            // console.log(placeString);
+        }
     }
 }
