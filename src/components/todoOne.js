@@ -12,6 +12,7 @@ let template = `
     </div>
 </section>`;
 import _ from 'lodash';
+import performance from '../js/performance_mixin';
 let initTodo = {
     id: null,
     text: '',
@@ -19,6 +20,7 @@ let initTodo = {
 };
 export default {
     template: template ,
+    mixins:[performance],
     props: {
         todoItem:{
             default(){

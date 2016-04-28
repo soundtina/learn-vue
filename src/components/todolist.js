@@ -13,14 +13,12 @@ let template = `<section>
 
     </ul>
     <div class=" grey-text lighten-3">
-        double click to edit <br/>
-        powerd by materialize & vue
+        <p v-translate="'editway'"></p>
+        <p v-translate="'powerdby'"></p>
     </div>
 </section>`;
 import todoOne from './todoOne';
 import todoFilter from './todoFilter';
-import ajaxPlugin from '../js/async';
-console.log(ajaxPlugin);
 export default {
     template: template,
     props: {

@@ -1,28 +1,25 @@
 let Vue = require('vue');
 import _ from 'lodash';
 import todoStore from './js/store';
-import todoList from './components/todolist'
+import todoList from './components/todolist';
+import myI18n from './js/i18n';
+import translateLib from './js/translate'
+
 let template =  `
 <section>
+    <div>
+        <input id="lang-cn" v-model="language_" type="radio" v-bind:value="'CN'">
+        <label for="lang-cn">CN</label>
+        <input id="lang-en" v-model="language_" type="radio" v-bind:value="'EN'">
+        <label for="lang-en" >EN</label>
+    </div>
     <div id="toast-container" v-show="msg">
         <div class="toast" >{{msg}}</div>
     </div>
     <todo-list @set-todo="setOneTodo"   :list-data="todoList"></todo-list>
 </section>`;
-Vue.mixin({
-    data() {
-        return{
-            __loadtime : 0
-        }
-    },
-    init: function () {
-        this.__loadtime = +Date.now();
-    },
-    ready(){
-        console.log(this.$options.name);
-        console.log(+Date.now() - this.__loadtime);
-    }
-});
+
+Vue.use(myI18n,{translateLib});
 
 new Vue({
     el: '#todo-app',
