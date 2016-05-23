@@ -3,7 +3,7 @@ let template = `<section>
     <ul class="collection">
         <li class="collection-item" transition="expand" style="padding:0" v-for="t in listData | filterBy filterStatus in 'done'" track-by="id">
             <div class="hoverable todo-container">
-                <todo-one :todo-item="t"></todo-one>
+                <todo-one :todo-id="$index" :todo-item="t"></todo-one>
                 <i class="small material-icons" @click="removeTodo(t)" >close</i>
             </div>
         </li>
@@ -24,7 +24,6 @@ export default {
     props: {
         listData: Array
     },
-
     data(){
         return {
             filterStatus: null,

@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/soundtina/learn-vue#readme",
   "dependencies": {
-    "vue": "^1.0.21"
+    "vue": "^1.0.21",
+    "wilddog": "^0.6.3"
   },
   "devDependencies": {
     "babel-core": "^6.7.6",

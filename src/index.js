@@ -43,21 +43,20 @@ new Vue({
             }
 
         },
-        _updateTodo(todoInfo){
-            let status = todoStore.updateTodoInfo(todoInfo);
-            if (status) {
+        _updateTodo(todoId ,todoInfo){
+            todoStore.updateTodoInfo(todoId, todoInfo).then(()=>{
                 // 提示更新成功 临时使用
                 this.msg="保存成功";
-
                 setTimeout(() => {
                     this.msg = '';
                 }, 3000);
-            }else{
+            },()=>{
                 // TODO: 调用更新出错的回调
-            }
+            });
         },
-        setOneTodo(todoInfo){
-            todoInfo.id ? this._updateTodo(todoInfo): this._addTodo(todoInfo);
+        setOneTodo(todoId ,todoInfo){
+            //todo add Logic
+            todoInfo.id ? this._updateTodo(todoId,todoInfo): this._addTodo(this.todoList.length,todoInfo);
         }
 
     },
@@ -65,6 +64,8 @@ new Vue({
         todoList
     },
     created(){
-        this.todoList = todoStore.getTodoList();
+        todoStore.getTodoList().then((data) => {
+            this.todoList = _.cloneDeep(data);
+        });
     }
 });

@@ -22,6 +22,9 @@ export default {
     template: template ,
     mixins:[performance],
     props: {
+        todoId:{
+            type: Number
+        },
         todoItem:{
             default(){
                 return _.cloneDeep(initTodo);
@@ -38,7 +41,7 @@ export default {
             //这地方逻辑处理的比较耦合，跟todolist 中的wath Listdata，不好理解
             handler(newVal){
                 if (!_.isEmpty(newVal.text)) {
-                    this.$dispatch('set-todo', newVal);
+                    this.$dispatch('set-todo',this.todoId, newVal);
                     this.disableEdit();
                 }else {
                     this.$els.editinput.focus();
