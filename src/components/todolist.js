@@ -1,10 +1,10 @@
 let template = `<section>
     <todo-filter @change-status="changeStatus"></todo-filter>
     <ul class="collection">
-        <li class="collection-item" transition="expand" style="padding:0" v-for="t in listData | filterBy filterStatus in 'done'" track-by="id">
+        <li class="collection-item" transition="expand" style="padding:0" v-for="t in listData | filterBy filterStatus in 'done'">
             <div class="hoverable todo-container">
                 <todo-one :todo-id="$index" :todo-item="t"></todo-one>
-                <i class="small material-icons" @click="removeTodo(t)" >close</i>
+                <i class="small material-icons" @click="removeTodo($index,t)" >close</i>
             </div>
         </li>
         <li  class="collection-item" style="padding:0" >
@@ -22,7 +22,8 @@ import todoFilter from './todoFilter';
 export default {
     template: template,
     props: {
-        listData: Array
+        listData: Array,
+        removeTodo: Function
     },
     data(){
         return {
@@ -45,9 +46,6 @@ export default {
 
     },
     methods:{
-        removeTodo(todoInfo){
-            this.listData.$remove(todoInfo);
-        },
         changeStatus(_status){
             this.filterStatus  = _status;
         }

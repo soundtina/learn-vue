@@ -25,10 +25,5 @@ export default {
             });
         });
         return _todoPromise;
-    },
-    addTodoInfo(key,tinfo){
-
-
-        return 'true';
     }
 }

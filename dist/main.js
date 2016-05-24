@@ -71,7 +71,7 @@
 	var Vue = __webpack_require__(80);
 
 
-	var template = '\n<section>\n    <div>\n        <input id="lang-cn" v-model="language_" type="radio" v-bind:value="\'CN\'">\n        <label for="lang-cn">CN</label>\n        <input id="lang-en" v-model="language_" type="radio" v-bind:value="\'EN\'">\n        <label for="lang-en" >EN</label>\n    </div>\n    <div id="toast-container" v-show="msg">\n        <div class="toast" >{{msg}}</div>\n    </div>\n    <todo-list @set-todo="setOneTodo"   :list-data="todoList"></todo-list>\n</section>';
+	var template = '\n<section>\n    <div>\n        <input id="lang-cn" v-model="language_" type="radio" v-bind:value="\'CN\'">\n        <label for="lang-cn">CN</label>\n        <input id="lang-en" v-model="language_" type="radio" v-bind:value="\'EN\'">\n        <label for="lang-en" >EN</label>\n    </div>\n    <div id="toast-container" v-show="msg">\n        <div class="toast" >{{msg}}</div>\n    </div>\n    <todo-list @set-todo="setOneTodo" :remove-todo="removeTodo"  :list-data="todoList"></todo-list>\n</section>';
 
 	Vue.use(_i18n2.default, { translateLib: _translate2.default });
 
@@ -83,29 +83,38 @@
 	        msg: ''
 	    },
 	    methods: {
-	        _addTodo: function _addTodo(todoInfo) {
+	        removeTodo: function removeTodo(todoId, todoInfo) {
 	            var _this = this;
 
-	            todoInfo.id = _lodash2.default.uniqueId('todo_');
-	            var status = _store2.default.addTodoInfo(todoInfo);
-	            if (status) {
-	                this.msg = "新增成功";
-	                this.todoList.push(todoInfo);
+	            _store2.default.updateTodoInfo(todoId, null).then(function () {
+	                _this.todoList.$remove(todoInfo);
+	            });
+	        },
+	        _addTodo: function _addTodo(todoInfo) {
+	            var _this2 = this;
+
+	            var newId = this.todoList.length;
+	            //todo 里面的id没有什么作用
+	            todoInfo.id = newId;
+	            _store2.default.updateTodoInfo(newId, todoInfo).then(function () {
+	                // 提示更新成功 临时使用
+	                _this2.msg = "新增成功";
 	                setTimeout(function () {
-	                    _this.msg = '';
+	                    _this2.msg = '';
 	                }, 3000);
-	            } else {
+	                _this2.todoList.push(todoInfo);
+	            }, function () {
 	                // TODO: 调用更新出错的回调
-	            }
+	            });
 	        },
 	        _updateTodo: function _updateTodo(todoId, todoInfo) {
-	            var _this2 = this;
+	            var _this3 = this;
 
 	            _store2.default.updateTodoInfo(todoId, todoInfo).then(function () {
 	                // 提示更新成功 临时使用
-	                _this2.msg = "保存成功";
+	                _this3.msg = "保存成功";
 	                setTimeout(function () {
-	                    _this2.msg = '';
+	                    _this3.msg = '';
 	                }, 3000);
 	            }, function () {
 	                // TODO: 调用更新出错的回调
@@ -113,17 +122,18 @@
 	        },
 	        setOneTodo: function setOneTodo(todoId, todoInfo) {
 	            //todo add Logic
-	            todoInfo.id ? this._updateTodo(todoId, todoInfo) : this._addTodo(this.todoList.length, todoInfo);
+	            debugger;
+	            !_lodash2.default.isUndefined(todoId) ? this._updateTodo(todoId, todoInfo) : this._addTodo(todoInfo);
 	        }
 	    },
 	    components: {
 	        todoList: _todolist2.default
 	    },
 	    created: function created() {
-	        var _this3 = this;
+	        var _this4 = this;
 
 	        _store2.default.getTodoList().then(function (data) {
-	            _this3.todoList = _lodash2.default.cloneDeep(data);
+	            _this4.todoList = _lodash2.default.cloneDeep(data || []);
 	        });
 	    }
 	});
@@ -16429,10 +16439,6 @@
 	            });
 	        });
 	        return _todoPromise;
-	    },
-	    addTodoInfo: function addTodoInfo(key, tinfo) {
-
-	        return 'true';
 	    }
 	};
 
@@ -28315,11 +28321,12 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var template = '<section>\n    <todo-filter @change-status="changeStatus"></todo-filter>\n    <ul class="collection">\n        <li class="collection-item" transition="expand" style="padding:0" v-for="t in listData | filterBy filterStatus in \'done\'" track-by="id">\n            <div class="hoverable todo-container">\n                <todo-one :todo-id="$index" :todo-item="t"></todo-one>\n                <i class="small material-icons" @click="removeTodo(t)" >close</i>\n            </div>\n        </li>\n        <li  class="collection-item" style="padding:0" >\n            <todo-one :todo-item="defaultTodo" ></todo-one>\n        </li>\n\n    </ul>\n    <div class=" grey-text lighten-3">\n        <p v-translate="\'editway\'"></p>\n        <p v-translate="\'powerdby\'"></p>\n    </div>\n</section>';
+	var template = '<section>\n    <todo-filter @change-status="changeStatus"></todo-filter>\n    <ul class="collection">\n        <li class="collection-item" transition="expand" style="padding:0" v-for="t in listData | filterBy filterStatus in \'done\'">\n            <div class="hoverable todo-container">\n                <todo-one :todo-id="$index" :todo-item="t"></todo-one>\n                <i class="small material-icons" @click="removeTodo($index,t)" >close</i>\n            </div>\n        </li>\n        <li  class="collection-item" style="padding:0" >\n            <todo-one :todo-item="defaultTodo" ></todo-one>\n        </li>\n\n    </ul>\n    <div class=" grey-text lighten-3">\n        <p v-translate="\'editway\'"></p>\n        <p v-translate="\'powerdby\'"></p>\n    </div>\n</section>';
 	exports.default = {
 	    template: template,
 	    props: {
-	        listData: Array
+	        listData: Array,
+	        removeTodo: Function
 	    },
 	    data: function data() {
 	        return {
@@ -28342,9 +28349,6 @@
 	        }
 	    },
 	    methods: {
-	        removeTodo: function removeTodo(todoInfo) {
-	            this.listData.$remove(todoInfo);
-	        },
 	        changeStatus: function changeStatus(_status) {
 	            this.filterStatus = _status;
 	        }
@@ -28372,7 +28376,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var template = '\n<section  style="-webkit-user-select: none;padding: 10px 20px;">\n    <div class="row" style="margin-bottom:0px">\n        <div class="col s2">\n            <input type="checkbox" id="chk{{todoItem.id}}" class="filled-in" v-model="todoItem.done" />\n            <label style="margin-top:10px " for="chk{{todoItem.id}}"></label>\n        </div>\n        <div class="col s10"  @dblclick.stop="enableEdit">\n            <input  v-el:editinput v-if="isEditMode|| !todoItem.id" :autofocus="!todoItem.id" type="text" @click.stop v-model="todoItem.text" lazy />\n            <div :class={\'done-todo\':todoItem.done} style="height:3rem;line-height:3rem" v-else>{{todoItem.text}}</div >\n        </div>\n    </div>\n</section>';
+	var template = '\n<section  style="-webkit-user-select: none;padding: 10px 20px;">\n    <div class="row" style="margin-bottom:0px">\n        <div class="col s2">\n            <input type="checkbox" id="chk{{todoItem.id}}" class="filled-in" v-model="todoItem.done" />\n            <label style="margin-top:10px " for="chk{{todoItem.id}}"></label>\n        </div>\n        <div class="col s10"  @dblclick.stop="enableEdit">\n            <input  v-el:editinput v-show="isEditMode || todoItem.id === null" :autofocus="!todoItem.id" type="text" @click.stop v-model="todoItem.text" lazy />\n            <div :class={\'done-todo\':todoItem.done} style="height:3rem;line-height:3rem" v-else>{{todoItem.text}}</div >\n        </div>\n    </div>\n</section>';
 
 	var initTodo = {
 	    id: null,
