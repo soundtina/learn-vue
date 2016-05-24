@@ -6,13 +6,17 @@ let template = `
             <label style="margin-top:10px " for="chk{{todoItem.id}}"></label>
         </div>
         <div class="col s10"  @dblclick.stop="enableEdit">
-            <input  v-el:editinput v-show="isEditMode || todoItem.id === null" :autofocus="!todoItem.id" type="text" @click.stop v-model="todoItem.text" lazy />
+            <div v-show="isEditMode || todoItem.id === null" >
+                <input placeholder="todo content" v-el:editinput :autofocus="!todoItem.id" type="text" @click.stop v-model="todoItem.text" lazy />
+                <date-picker placeholder="reminder time"></date-picker>
+            </div>
             <div :class={'done-todo':todoItem.done} style="height:3rem;line-height:3rem" v-else>{{todoItem.text}}</div >
         </div>
     </div>
 </section>`;
 import _ from 'lodash';
 import performance from '../js/performance_mixin';
+import datePicker from './calendar';
 let initTodo = {
     id: null,
     text: '',
@@ -70,6 +74,9 @@ export default {
         window.removeEventListener('click', ()=>{
             this.disableEdit();
         });
+    },
+    components:{
+        datePicker
     },
     directives:{
         placeholder(placeString){

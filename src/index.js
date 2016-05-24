@@ -2,6 +2,7 @@ let Vue = require('vue');
 import _ from 'lodash';
 import todoStore from './js/store';
 import todoList from './components/todolist';
+import datePicker from './components/calendar';
 import myI18n from './js/i18n';
 import translateLib from './js/translate'
 
@@ -64,13 +65,12 @@ new Vue({
         },
         setOneTodo(todoId ,todoInfo){
             //todo add Logic
-            debugger;
             !_.isUndefined(todoId ) ? this._updateTodo(todoId,todoInfo): this._addTodo(todoInfo);
         }
 
     },
     components:{
-        todoList
+        todoList,datePicker
     },
     created(){
         todoStore.getTodoList().then((data) => {
