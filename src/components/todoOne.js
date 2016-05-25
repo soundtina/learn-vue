@@ -12,7 +12,13 @@ let template = `
                     v-el:editinput :autofocus="!todoId" type="text" @click.stop v-model="todoItem.text" lazy />
                 <date-picker placeholder="reminder time"></date-picker>
             </div>
-            <div :class={'done-todo':todoItem.done} style="height:3rem;line-height:3rem" v-else>{{todoItem.text}}</div >
+            <div
+                :class={'done-todo':todoItem.done}
+                v-else
+            >
+                <div style="height:3rem;line-height:3rem">{{todoItem.text}}</div>
+                <div style="height:2rem;line-height:2rem">{{todoItem.time || (new Date())}}</div>
+            </div >
         </div>
         <div class="col s2"><span class="icon-time"></span></div>
     </div>
