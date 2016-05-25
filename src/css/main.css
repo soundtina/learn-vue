@@ -1,7 +1,29 @@
 [v-cloak]{
     display: none;
 }
-
+html{
+    background-image: url("../img/bg2.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.icon-time{
+    display: inline-block;
+    background-image: url(../img/icon-time.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 30px;
+    height: 42px;
+}
+nav{
+    background-color: #AEC0C0;
+}
+.collection{
+    border: 0;
+}
+.collection .collection-item{
+    background-color: rgba(255, 255, 255, 0.9);
+}
 #todo-app{
     width: 500px;
     margin: 100px auto 0 auto;
@@ -15,7 +37,7 @@
 .todo-container i{
     position: absolute;
     top: 20px;
-    right: 5px;
+    right: 15px;
     cursor: pointer;
     display: none;;
 }
@@ -35,14 +57,21 @@
     color: #bdbdbd;
     text-decoration: line-through;
 }
-
+.collection{
+    transition: all .8s ease;
+}
 /* 必需 */
 .expand-transition {
-  transition: all .8s ease;
+  transition: all .5s ease;
 }
 
 /* .expand-enter 定义进入的开始状态 */
 /* .expand-leave 定义离开的结束状态 */
-.expand-enter, .expand-leave {
-  transform:translateX(500px);
+.expand-enter{
+  transform:translatey(50px);
+  opacity: 0;
+}
+.expand-leave {
+  transform:translatey(-50px);
+  opacity: 0;
 }

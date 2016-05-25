@@ -12,9 +12,9 @@ let template = `<section>
         </li>
 
     </ul>
-    <div class=" grey-text lighten-3">
+    <div class="lighten-3">
         <p v-translate="'editway'"></p>
-        <p v-translate="'powerdby'"></p>
+        <p v-translate="'author'"></p>
     </div>
 </section>`;
 import todoOne from './todoOne';

@@ -9,10 +9,11 @@ let template =  `
 <section>
     <div>
         <input id="lang-cn" v-model="language_" type="radio" v-bind:value="'CN'">
-        <label for="lang-cn">CN</label>
+        <label for="lang-cn">Chinese</label>
         <input id="lang-en" v-model="language_" type="radio" v-bind:value="'EN'">
-        <label for="lang-en" >EN</label>
+        <label for="lang-en" >Engilsh</label>
     </div>
+    <div><span v-model="language_" v-bind:value="'CN'" @click=value="'CN'">CN</span>/<span v-model="language_" v-bind:value="'EN'">EN</span></div>
     <div id="toast-container" v-show="msg">
         <div class="toast" >{{msg}}</div>
     </div>
@@ -64,7 +65,6 @@ new Vue({
         },
         setOneTodo(todoId ,todoInfo){
             //todo add Logic
-            debugger;
             !_.isUndefined(todoId ) ? this._updateTodo(todoId,todoInfo): this._addTodo(todoInfo);
         }
 

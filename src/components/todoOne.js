@@ -5,10 +5,11 @@ let template = `
             <input type="checkbox" id="chk{{todoItem.id}}" class="filled-in" v-model="todoItem.done" />
             <label style="margin-top:10px " for="chk{{todoItem.id}}"></label>
         </div>
-        <div class="col s10"  @dblclick.stop="enableEdit">
+        <div class="col s8"  @dblclick.stop="enableEdit">
             <input  v-el:editinput v-show="isEditMode || todoItem.id === null" :autofocus="!todoItem.id" type="text" @click.stop v-model="todoItem.text" lazy />
             <div :class={'done-todo':todoItem.done} style="height:3rem;line-height:3rem" v-else>{{todoItem.text}}</div >
         </div>
+        <div class="col s2"><span class="icon-time"></span></div>
     </div>
 </section>`;
 import _ from 'lodash';

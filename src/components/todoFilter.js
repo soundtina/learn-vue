@@ -1,10 +1,19 @@
 let template = `
 <section>
-
+    <nav>
+        <div class="nav-wrapper">
+          <ul id="nav-mobile" class="right">
+              <template v-for="st in status">
+                     <li><a @click="setStatus($index)" v-translate="st"></a></li>
+              </template>
+          </ul>
+        </div>
+      </nav>
+<!-- 
     <template v-for="st in status">
         <input name="group-status" type="radio" id="todo-{{st}}" @click="setStatus($index)" />
         <label for="todo-{{st}}" v-translate="st"  ></label>
-    </template>
+    </template> -->
 </section>
 `;
 export default {
