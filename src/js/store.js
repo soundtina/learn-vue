@@ -1,4 +1,4 @@
-const DBUrl = 'https://weifei365.wilddogio.com/todoList';
+const DBUrl = 'https://todoyonghua110.wilddogio.com/todoList';
 
 let Wilddog = require('wilddog');
 
