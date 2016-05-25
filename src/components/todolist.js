@@ -1,16 +1,16 @@
 let template = `<section>
     <todo-filter @change-status="changeStatus"></todo-filter>
     <ul class="collection">
-        <li class="collection-item" transition="expand" style="padding:0" v-for="t in listData | filterBy filterStatus in 'done'">
+        <li class="collection-item" style="padding:0" >
+            <todo-one :todo-item="defaultTodo" :todo-id="defaultTodo.id" ></todo-one>
+        </li>
+        <li class="collection-item" transition="expand" style="padding:0"
+            v-for="t in listData | filterBy filterStatus in 'done' | sortByStatus">
             <div class="hoverable todo-container">
-                <todo-one :todo-id="$index" :todo-item="t"></todo-one>
-                <i class="small material-icons" @click="removeTodo($index,t)" >close</i>
+                <todo-one :todo-item="t" :todo-id="t.id"></todo-one>
+                <i class="small material-icons" @click="removeTodo(t)" >close</i>
             </div>
         </li>
-        <li  class="collection-item" style="padding:0" >
-            <todo-one :todo-item="defaultTodo" ></todo-one>
-        </li>
-
     </ul>
     <div class="lighten-3">
         <p v-translate="'editway'"></p>
@@ -31,7 +31,8 @@ export default {
             defaultTodo: {
                 id: null,
                 text: '',
-                done: false
+                done: false,
+                times: Math.random()
             }
         }
     },
