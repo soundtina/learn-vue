@@ -66,6 +66,9 @@ export default {
     },
     methods:{
         enableEdit() {
+            if (this.todoItem.done) {
+                return;
+            }
             this.isEditMode = true;
             this.$nextTick(() => {
                 this.$els.editinput.focus();
