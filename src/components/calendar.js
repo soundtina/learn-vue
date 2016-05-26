@@ -1,4 +1,4 @@
-let datePicker = require('../js/lib/picker.date.js')
+require('../js/lib/picker.date.js')
 let _template = `<section><input placeholder="{{placeholder}}" v-el:date type="date" class="datepicker"> </section>`;
 
 
