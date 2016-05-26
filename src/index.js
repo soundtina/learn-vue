@@ -1,6 +1,7 @@
 let Vue = require('vue');
 import _ from 'lodash';
 import todoStore from './js/store';
+import util from './js/util';
 import todoList from './components/todolist';
 import datePicker from './components/calendar';
 import myI18n from './js/i18n';
@@ -9,6 +10,12 @@ import translateLib from './js/translate'
 let template =  `
 <section>
     <div class="bg"></div>
+    <div>
+        <input id="lang-cn" v-model="language_" type="radio" v-bind:value="'CN'">
+        <label for="lang-cn">Chinese</label>
+        <input id="lang-en" v-model="language_" type="radio" v-bind:value="'EN'">
+        <label for="lang-en" >Engilsh</label>
+    </div>
     <div id="toast-container" v-show="msg">
         <div class="toast" >{{msg}}</div>
     </div>
@@ -61,6 +68,7 @@ new Vue({
             todoInfo.id = newId;
             todoStore.updateTodoInfo(todoInfo).then(()=>{
                 // 提示更新成功 临时使用
+
                 this.msg="新增成功";
                 setTimeout(() => {
                     this.msg = '';
@@ -74,6 +82,7 @@ new Vue({
             todoStore.updateTodoInfo(todoInfo).then(()=>{
                 // 提示更新成功 临时使用
                 this.msg="保存成功";
+                // util.pushNotification('你保存成功了');
                 setTimeout(() => {
                     this.msg = '';
                 }, 3000);

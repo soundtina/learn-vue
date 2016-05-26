@@ -1,3 +1,4 @@
+import noticeJob from './notice-job'
 const DBUrl = 'https://todoyonghua110.wilddogio.com/todoList';
 
 let Wilddog = require('wilddog');
@@ -16,7 +17,7 @@ export default {
                     }
                     todoList.push(data[todoId]);
                 }
-console.log(data, todoList);
+                debugger
                 resolve(todoList);
                 // new Wilddog(DBUrl).set({});
             }, (errMsg) => {
@@ -26,7 +27,6 @@ console.log(data, todoList);
     },
     addListener() {},
     updateTodoInfo(todoInfo){
-console.log(todoInfo);
         return new Promise(function(resolve, reject) {
             new Wilddog(DBUrl).child(todoInfo.id).update(todoInfo, (errMsg) => {
                 errMsg ? reject(errMsg) : resolve(true);
@@ -38,6 +38,10 @@ console.log(todoInfo);
             //         resolve(true);
             //     }
             // });
+        }).then(() => {
+            // noticeJob(this.todoList)
+            console.log(1111);
+            return Promise;
         });
     },
     removeTodoInfo(todoInfo) {
