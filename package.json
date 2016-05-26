@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/soundtina/learn-vue#readme",
   "dependencies": {
+    "moment": "^2.13.0",
     "vue": "^1.0.21",
     "wilddog": "^0.6.3"
   },

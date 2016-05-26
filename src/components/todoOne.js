@@ -1,3 +1,7 @@
+import _ from 'lodash';
+import performance from '../js/performance_mixin';
+import datePicker from './calendar';
+import moment from 'moment';
 let template = `
 <section  style="-webkit-user-select: none;padding: 10px 20px;">
     <div class="m-media">
@@ -9,18 +13,18 @@ let template = `
             <div v-show="isEditMode || !todoId" >
                 <input
                     placeholder="todo content"
-                    v-el:editinput :autofocus="!todoId" type="text" @click.stop v-model="todoItem.text" lazy />
+                    v-el:editinput :autofocus="!todoId" type="text" @keyup.enter="saveTodo" @click.stop v-model="todoItem.text" lazy />
             </div>
             <div
                 :class={'done-todo':todoItem.done}
                 v-else
             >
                 <div class="todoItem-title">{{todoItem.text}}</div>
-                <div class="todoItem-time">{{todoItem.time || (new Date())}}</div>
+                <div class="todoItem-time">{{todoItem.time || (new Date()) | formatDate}}</div>
              </div>
         </div>
         <div class="media-right media-middle">
-            <span class="icon-time"><date-picker placeholder="reminder time"></date-picker></span>
+            <span class="icon-time"><date-picker :set-Date="saveTodo" :val.sync="todoItem.time" placeholder="reminder time"></date-picker></span>
         </div>
     </div>
     <div class="row" style="margin-bottom:0px;display:none">
@@ -46,9 +50,6 @@ let template = `
         <div class="col s2"><span class="icon-time"></span></div>
     </div>
 </section>`;
-import _ from 'lodash';
-import performance from '../js/performance_mixin';
-import datePicker from './calendar';
 
 const initTodo = {
     id: null,
@@ -79,21 +80,22 @@ export default {
         };
     },
     watch:{
-        todoItem:{
-            deep: true,
-            //这地方逻辑处理的比较耦合，跟todolist 中的wath Listdata，不好理解
-            handler(newVal){
-                // debugger
-                if (!_.isEmpty(newVal.text)) {
-                    this.$dispatch('set-todo', this.todoId, newVal);
-                    this.disableEdit();
-                }else {
-                    this.$els.editinput.focus();
-                }
-            }
+        'todoItem.done':function (){
+            this.saveTodo();
+        },
+        'todoItem.time':function (val){
+            this.todoItem.time = val;
         }
     },
     methods:{
+        saveTodo(){
+            if (!_.isEmpty(this.todoItem.text)) {
+                this.$dispatch('set-todo', this.todoId, this.todoItem);
+                this.disableEdit();
+            }else {
+                this.$els.editinput.focus();
+            }
+        },
         enableEdit() {
             if (this.todoItem.done) {
                 return;
@@ -119,6 +121,13 @@ export default {
     },
     components: {
         datePicker
+    },
+    filters:{
+        formatDate(val, format){
+            let mt = moment(val);
+            return mt.format(format||'YYYY-MM-DD HH:mm')
+        }
+
     },
     directives: {
         placeholder(placeString) {
