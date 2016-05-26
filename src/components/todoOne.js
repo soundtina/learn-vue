@@ -1,6 +1,29 @@
 let template = `
 <section  style="-webkit-user-select: none;padding: 10px 20px;">
-    <div class="row" style="margin-bottom:0px">
+    <div class="m-media">
+        <div class="media-left media-middle">
+            <input type="checkbox" id="chk_{{todoId}}" class="filled-in" v-model="todoItem.done" />
+            <label style="margin-top:10px " for="chk_{{todoId}}"></label>
+        </div>
+        <div class="media-body" @dblclick.stop="enableEdit">
+            <div v-show="isEditMode || !todoId" >
+                <input
+                    placeholder="todo content"
+                    v-el:editinput :autofocus="!todoId" type="text" @click.stop v-model="todoItem.text" lazy />
+            </div>
+            <div
+                :class={'done-todo':todoItem.done}
+                v-else
+            >
+                <div class="todoItem-title">{{todoItem.text}}</div>
+                <div class="todoItem-time">{{todoItem.time || (new Date())}}</div>
+             </div>
+        </div>
+        <div class="media-right media-middle">
+            <span class="icon-time"><date-picker placeholder="reminder time"></date-picker></span>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom:0px;display:none">
         <div class="col s2">
             <input type="checkbox" id="chk_{{todoId}}" class="filled-in" v-model="todoItem.done" />
             <label style="margin-top:10px " for="chk_{{todoId}}"></label>

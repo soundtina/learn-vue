@@ -12,7 +12,7 @@ let template = `<section>
             </div>
         </li>
     </ul>
-    <div class="lighten-3">
+    <div class="lighten-3 tips-info">
         <p v-translate="'editway'"></p>
         <p v-translate="'author'"></p>
     </div>
