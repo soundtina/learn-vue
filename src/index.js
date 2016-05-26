@@ -10,12 +10,6 @@ import translateLib from './js/translate'
 let template =  `
 <section>
     <div class="bg"></div>
-    <div>
-        <input id="lang-cn" v-model="language_" type="radio" v-bind:value="'CN'">
-        <label for="lang-cn">Chinese</label>
-        <input id="lang-en" v-model="language_" type="radio" v-bind:value="'EN'">
-        <label for="lang-en" >Engilsh</label>
-    </div>
     <div id="toast-container" v-show="msg">
         <div class="toast" >{{msg}}</div>
     </div>
