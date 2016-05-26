@@ -17,7 +17,7 @@ export default {
                     }
                     todoList.push(data[todoId]);
                 }
-                debugger
+                // debugger
                 resolve(todoList);
                 // new Wilddog(DBUrl).set({});
             }, (errMsg) => {
