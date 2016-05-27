@@ -5,24 +5,22 @@ let Wilddog = require('wilddog');
 
 
 export default {
-    getTodoList(){
-        return new Promise(function(resolve, reject) {
-            new Wilddog(DBUrl).once('value', (response) => {
-                let data = response.val() || {};
-                let todoList = [];
+    getTodoList(resetTodolist){
+        new Wilddog(DBUrl).on('value', (response) => {
+            let data = response.val() || {};
+            let todoList = [];
 
-                for (const todoId in data) {
-                    if (!data.hasOwnProperty(todoId) || !data[todoId]) {
-                        continue;
-                    }
-                    todoList.push(data[todoId]);
+            for (const todoId in data) {
+                if (!data.hasOwnProperty(todoId) || !data[todoId]) {
+                    continue;
                 }
-                // debugger
-                resolve(todoList);
-                // new Wilddog(DBUrl).set({});
-            }, (errMsg) => {
-                reject(errMsg);
-            });
+                todoList.push(data[todoId]);
+            }
+            if (typeof resetTodolist === 'function') {
+                resetTodolist(todoList);
+            }
+        }, (errMsg) => {
+            console.error(errMsg);
         });
     },
     addListener() {},
@@ -31,16 +29,8 @@ export default {
             new Wilddog(DBUrl).child(todoInfo.id).update(todoInfo, (errMsg) => {
                 errMsg ? reject(errMsg) : resolve(true);
             });
-            // new Wilddog(DBUrl).child(key.toString()).set(tinfo,(err) => {
-            //     if (err) {
-            //         reject(err);
-            //     }else {
-            //         resolve(true);
-            //     }
-            // });
         }).then(() => {
-            // noticeJob(this.todoList)
-            console.log(1111);
+            noticeJob(todoInfo)
             return Promise;
         });
     },

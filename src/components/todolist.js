@@ -5,7 +5,7 @@ let template = `<section>
             <todo-one :todo-item="defaultTodo" :todo-id="defaultTodo.id" ></todo-one>
         </li>
         <li class="collection-item" transition="expand" style="padding:0"
-            v-for="t in listData | filterBy filterStatus in 'done' | sortByStatus">
+            v-for="t in listData | filterBy filterStatus in 'done' | sortByStatus" track-by="id">
             <div class="hoverable todo-container">
                 <todo-one :todo-item="t" :todo-id="t.id"></todo-one>
                 <i class="small material-icons" @click="removeTodo(t)" >close</i>
@@ -32,7 +32,7 @@ export default {
                 id: null,
                 text: '',
                 done: false,
-                times: Math.random()
+                time: ''
             }
         }
     },
@@ -41,7 +41,8 @@ export default {
             this.defaultTodo = {
                 id: null,
                 text: '',
-                done: false
+                done: false,
+                time:''
             }
         }
 
