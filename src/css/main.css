@@ -34,6 +34,7 @@
 }
 .icon-time input{
     opacity: 0;
+    cursor: pointer;
 }
 .tips-info{
    color: #fff;

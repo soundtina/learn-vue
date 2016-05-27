@@ -1,7 +1,9 @@
 let Vue = require('vue');
 import _ from 'lodash';
 import todoStore from './js/store';
-import util from './js/util';
+import moment from 'moment';
+// import util from './js/util';
+import noticeJob from './js/notice-job';
 import todoList from './components/todolist';
 import datePicker from './components/calendar';
 import myI18n from './js/i18n';
@@ -48,6 +50,14 @@ new Vue({
         todoList: [],
         msg: ''
     },
+    watch:{
+        'todoList':{
+            handler(val){
+                noticeJob(val);
+            },
+            deep:true
+        }
+    },
     methods:{
         removeTodo(todoInfo){
             todoStore.removeTodoInfo(todoInfo).then(
@@ -67,7 +77,6 @@ new Vue({
                 setTimeout(() => {
                     this.msg = '';
                 }, 3000);
-                this.todoList.push(todoInfo);
             }, () => {
                 // TODO: 调用更新出错的回调
             });
@@ -76,7 +85,6 @@ new Vue({
             todoStore.updateTodoInfo(todoInfo).then(()=>{
                 // 提示更新成功 临时使用
                 this.msg="保存成功";
-                // util.pushNotification('你保存成功了');
                 setTimeout(() => {
                     this.msg = '';
                 }, 3000);
@@ -97,7 +105,7 @@ new Vue({
         todoList,datePicker
     },
     created(){
-        todoStore.getTodoList().then((todoList) => {
+        todoStore.getTodoList((todoList) => {
             this.todoList = _.cloneDeep(todoList);
         });
     }
