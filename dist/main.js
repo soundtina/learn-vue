@@ -54,10 +54,6 @@
 
 	var _store2 = _interopRequireDefault(_store);
 
-	var _moment = __webpack_require__(5);
-
-	var _moment2 = _interopRequireDefault(_moment);
-
 	var _noticeJob = __webpack_require__(4);
 
 	var _noticeJob2 = _interopRequireDefault(_noticeJob);
@@ -81,7 +77,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Vue = __webpack_require__(351);
-	// import util from './js/util';
+
 
 	var template = '\n<section>\n    <div class="bg"></div>\n    <div id="toast-container" v-show="msg">\n        <div class="toast" >{{msg}}</div>\n    </div>\n    <todo-list @set-todo="setOneTodo" :remove-todo="removeTodo"  :list-data="todoList"></todo-list>\n    <div class="language">\n        <input id="lang-cn" v-model="language_" type="radio" v-bind:value="\'CN\'">\n        <label for="lang-cn">CN</label>\n        <input id="lang-en" v-model="language_" type="radio" v-bind:value="\'EN\'">\n        <label for="lang-en" >EN</label>\n    </div>\n</section>';
 
@@ -16697,7 +16693,6 @@
 	}
 
 	module.exports = function (list) {
-	    console.log('restart' + (0, _moment2.default)().format('YYYY-MM-DD HH:mm'));
 	    var notices = getNeedNoticeTodos(_lodash2.default.cloneDeep(list));
 
 	    function _noticeJob(noticeTodos, index) {
@@ -16708,7 +16703,6 @@
 	            clearTimeout(window.noticeJob);
 	        }
 	        var _range = (0, _moment2.default)(noticeTodos[index].time).diff((0, _moment2.default)());
-	        console.log(_range);
 	        if (_range > 0) {
 	            window.noticeJob = setTimeout(function () {
 	                noticeTodos[index].noticed = true;
