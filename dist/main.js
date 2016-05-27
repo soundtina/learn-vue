@@ -42548,6 +42548,7 @@
 	            this.saveTodo();
 	        },
 	        'todoItem.time': function todoItemTime() {
+	            this.noticed = false;
 	            this.saveTodo();
 	        }
 	    },
