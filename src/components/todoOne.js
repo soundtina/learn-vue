@@ -70,6 +70,7 @@ export default {
             this.saveTodo();
         },
         'todoItem.time':function (){
+            this.noticed = false;
             this.saveTodo();
         }
     },

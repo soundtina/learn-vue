@@ -1,8 +1,6 @@
 let Vue = require('vue');
 import _ from 'lodash';
 import todoStore from './js/store';
-import moment from 'moment';
-// import util from './js/util';
 import noticeJob from './js/notice-job';
 import todoList from './components/todolist';
 import datePicker from './components/calendar';

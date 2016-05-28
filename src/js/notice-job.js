@@ -14,7 +14,6 @@ function getNeedNoticeTodos(list) {
 }
 
 module.exports = (list) => {
-    console.log('restart' + moment().format('YYYY-MM-DD HH:mm'));
     let notices = getNeedNoticeTodos(_.cloneDeep(list));
 
     function _noticeJob(noticeTodos, index) {
@@ -25,7 +24,6 @@ module.exports = (list) => {
             clearTimeout(window.noticeJob);
         }
         var _range = (moment(noticeTodos[index].time)).diff(moment());
-        console.log(_range);
         if (_range > 0) {
             window.noticeJob = setTimeout(function () {
                 noticeTodos[index].noticed = true;
