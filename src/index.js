@@ -1,28 +1,21 @@
-let Vue = require('vue');
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import VueI18n from 'vue-i18n';
+
 import _ from 'lodash';
-import todoStore from './js/store';
-import noticeJob from './js/notice-job';
-import todoList from './components/todolist';
-import datePicker from './components/calendar';
 import myI18n from './js/i18n';
-import translateLib from './js/translate'
+import App from './components/App.vue';
+// import router from './components/router.js';
+import { getCookieAll, setCookie, getCookieByName } from './utils/other.js';
+import zhCN from './locales/zh-CN.js';
+import enUS from './locales/en-US.js';
 
-let template =  `
-<section>
-    <div class="bg"></div>
-    <div id="toast-container" v-show="msg">
-        <div class="toast" >{{msg}}</div>
-    </div>
-    <todo-list @set-todo="setOneTodo" :remove-todo="removeTodo"  :list-data="todoList"></todo-list>
-    <div class="language">
-        <input id="lang-cn" v-model="language_" type="radio" v-bind:value="'CN'">
-        <label for="lang-cn">CN</label>
-        <input id="lang-en" v-model="language_" type="radio" v-bind:value="'EN'">
-        <label for="lang-en" >EN</label>
-    </div>
-</section>`;
 
-Vue.use(myI18n,{translateLib});
+Vue.use(VueRouter);
+Vue.use(VueI18n);
+
+
+// custom filter
 Vue.filter('sortByStatus', function(list) {
     let doneList = [];
     let willList = [];
@@ -41,70 +34,67 @@ Vue.filter('sortByStatus', function(list) {
     }));
 });
 
-new Vue({
-    el: '#todo-app',
-    template: template,
-    data:{
-        todoList: [],
-        msg: ''
-    },
-    watch:{
-        'todoList':{
-            handler(val){
-                noticeJob(val);
-            },
-            deep:true
-        }
-    },
-    methods:{
-        removeTodo(todoInfo){
-            todoStore.removeTodoInfo(todoInfo).then(
-                ()=>{
-                    this.todoList.$remove(todoInfo);
-                }
-            );
-        },
-        _addTodo(todoInfo){
-            let newId = `TODO-${Date.now()}`;
 
-            todoInfo.id = newId;
-            todoStore.updateTodoInfo(todoInfo).then(()=>{
-                // 提示更新成功 临时使用
+// get all cookie
+const allCookies = getCookieAll();
 
-                this.msg="新增成功";
-                setTimeout(() => {
-                    this.msg = '';
-                }, 3000);
-            }, () => {
-                // TODO: 调用更新出错的回调
-            });
-        },
-        _updateTodo(todoInfo){
-            todoStore.updateTodoInfo(todoInfo).then(()=>{
-                // 提示更新成功 临时使用
-                this.msg="保存成功";
-                setTimeout(() => {
-                    this.msg = '';
-                }, 3000);
-            },()=>{
-                // TODO: 调用更新出错的回调
-            });
-        },
-        setOneTodo(todoId, todoInfo){
-            let _todoInfo = _.cloneDeep(todoInfo);
-            //todo add Logic
-            todoId ?
-                this._updateTodo(_todoInfo) :
-                this._addTodo(_todoInfo);
-        }
 
+// ------ I18N
+if (!allCookies.todos_lang || !{'en-US': true, 'zh-CN': true}[allCookies.todos_lang]) {
+    allCookies.todos_lang = 'en-US';
+    setCookie('todos_lang', allCookies.todos_lang);
+}
+Vue.config.lang = allCookies.todos_lang;
+Vue.locale('en-US', enUS);
+Vue.locale('zh-CN', zhCN);
+
+
+// ------ router
+const router = new VueRouter({
+    // history: true,
+    // saveScrollPosition: true,
+    // transitionOnLoad: true,
+});
+
+router.map({
+    '/login': {
+        name: 'login',
+        component: require('./components/user/Login.vue')
     },
-    components:{
-        todoList,datePicker
+    '/register': {
+        name: 'register',
+        component: require('./components/user/Register.vue')
     },
-    created(){
-        todoStore.getTodoList((todoList) => {
-            this.todoList = _.cloneDeep(todoList);
-        });
+    '/detail': {
+        name: 'detail',
+        component: require('./components/detail/Detail.vue')
+    },
+    '/index': {
+        name: 'index',
+        component: require('./components/Index.vue')
+    },
+    '*': {
+        name: 'index',
+        component: require('./components/Index.vue')
     }
 });
+router.beforeEach(function({ to, next, redirect }) {
+    const username = getCookieByName('todos_username');
+    console.log(username, to.path);
+
+    if (!username && to.path.substr(0, 7) === '/detail') {
+        redirect('/login');
+    } else {
+        next();
+    }
+});
+// router.redirect({
+//     '/': '/index'
+// });
+
+
+// start App
+router.start(App, '#todo-app');
+
+
+// export default router;

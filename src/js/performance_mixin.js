@@ -8,6 +8,6 @@ export default {
         this.__loadtime = +Date.now();
     },
     ready(){
-        console.log(this.$options.name + ':'+ (+Date.now() - this.__loadtime));
+        // console.log(this.$options.name + ':'+ (+Date.now() - this.__loadtime));
     }
 }
